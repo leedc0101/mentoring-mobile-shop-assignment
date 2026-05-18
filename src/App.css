@@ -115,29 +115,6 @@ h1 {
   background: #ddf7e8;
 }
 
-.tabs {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 8px;
-  padding: 0 20px 14px;
-}
-
-.tabs a {
-  display: grid;
-  place-items: center;
-  height: 40px;
-  border-radius: 999px;
-  color: #6d625b;
-  background: #eee8df;
-  font-size: 13px;
-  font-weight: 700;
-}
-
-.tabs a.active {
-  color: #fff;
-  background: #34785f;
-}
-
 .content {
   min-height: 0;
   overflow: auto;
@@ -223,7 +200,7 @@ h1 {
   font-weight: 800;
 }
 
-.productFooter button, .submit, .checkoutLink, .primaryLink {
+.productFooter button, .submit, .primaryLink, .secondaryLink {
   display: grid;
   place-items: center;
   min-width: 76px;
@@ -384,8 +361,11 @@ h1 {
   margin-top: 8px;
 }
 
-.checkoutLink {
+.secondaryLink {
   width: 100%;
+  margin-top: 2px;
+  background: #eee8df;
+  color: #37312c;
 }
 
 .primaryLink {
