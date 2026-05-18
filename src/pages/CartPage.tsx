@@ -1,34 +1,41 @@
 import { Link } from "react-router-dom";
-import { useShop } from "../features/shop/ShopContext";
 import type { CartItem } from "../types";
 import { currency } from "../utils/format";
 
+const cartItems: CartItem[] = [
+  {
+    product: {
+      id: "daily-tote",
+      name: "데일리 토트백",
+      description: "가벼운 출근과 카페 작업에 맞는 미니멀 토트",
+      price: 32000,
+      stock: 4,
+      image:
+        "https://images.unsplash.com/photo-1594223274512-ad4803739b7c?auto=format&fit=crop&w=600&q=80",
+      badge: "BEST",
+    },
+    quantity: 1,
+  },
+  {
+    product: {
+      id: "linen-cap",
+      name: "린넨 볼캡",
+      description: "여름 산책용으로 가볍게 쓰기 좋은 린넨 캡",
+      price: 18000,
+      stock: 8,
+      image:
+        "https://images.unsplash.com/photo-1521369909029-2afed882baee?auto=format&fit=crop&w=600&q=80",
+    },
+    quantity: 1,
+  },
+];
+
 export function CartPage() {
-  const shop = useShop();
-
-  if (shop.cart.items.length === 0) {
-    return (
-      <div className="empty">
-        <h2>장바구니가 비어 있어요</h2>
-        <p>상품을 하나 담으면 주문 확인 영역이 나타납니다.</p>
-        <Link className="primaryLink" to="/">
-          상품 보러가기
-        </Link>
-      </div>
-    );
-  }
-
   return (
     <div className="cartView">
       <div className="cartItems">
-        {shop.cart.items.map((item) => (
-          <CartRow
-            item={item}
-            key={item.product.id}
-            onIncrease={shop.increaseQuantity}
-            onDecrease={shop.decreaseQuantity}
-            onRemove={shop.removeItem}
-          />
+        {cartItems.map((item) => (
+          <CartRow item={item} key={item.product.id} />
         ))}
       </div>
       <Link className="checkoutLink" to="/checkout">
@@ -40,14 +47,8 @@ export function CartPage() {
 
 function CartRow({
   item,
-  onIncrease,
-  onDecrease,
-  onRemove,
 }: {
   item: CartItem;
-  onIncrease: (productId: string) => void;
-  onDecrease: (productId: string) => void;
-  onRemove: (productId: string) => void;
 }) {
   return (
     <article className="cartRow">
@@ -56,14 +57,14 @@ function CartRow({
         <h3>{item.product.name}</h3>
         <p>{currency.format(item.product.price)}</p>
         <div className="quantity">
-          <button aria-label="수량 줄이기" onClick={() => onDecrease(item.product.id)}>
+          <button aria-label="수량 줄이기">
             -
           </button>
           <span>{item.quantity}</span>
-          <button aria-label="수량 늘리기" onClick={() => onIncrease(item.product.id)}>
+          <button aria-label="수량 늘리기">
             +
           </button>
-          <button className="remove" onClick={() => onRemove(item.product.id)}>
+          <button className="remove">
             삭제
           </button>
         </div>
@@ -71,4 +72,3 @@ function CartRow({
     </article>
   );
 }
-

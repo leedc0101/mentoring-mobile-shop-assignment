@@ -1,10 +1,7 @@
 import { NavLink, Outlet, useNavigate } from "react-router-dom";
-import { useShop } from "../features/shop/ShopContext";
 
 export function ShopLayout() {
-  const shop = useShop();
   const navigate = useNavigate();
-  const cartCount = shop.cart.items.reduce((sum, item) => sum + item.quantity, 0);
 
   return (
     <main className="page">
@@ -15,15 +12,9 @@ export function ShopLayout() {
             <strong>오늘의 가게</strong>
           </button>
           <button className="cartButton" onClick={() => navigate("/cart")}>
-            장바구니 <span>{cartCount}</span>
+            장바구니 <span>2</span>
           </button>
         </header>
-
-        {shop.errorMessage ? (
-          <div className="banner" role="alert">
-            {shop.errorMessage}
-          </div>
-        ) : null}
 
         <nav className="tabs" aria-label="주요 화면">
           <NavLink to="/" end>
@@ -34,20 +25,9 @@ export function ShopLayout() {
         </nav>
 
         <div className="content">
-          {shop.isLoading ? <Skeleton /> : <Outlet />}
+          <Outlet />
         </div>
       </section>
     </main>
   );
 }
-
-function Skeleton() {
-  return (
-    <div className="skeleton" aria-label="로딩 중">
-      <div />
-      <div />
-      <div />
-    </div>
-  );
-}
-

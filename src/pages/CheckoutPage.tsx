@@ -1,55 +1,45 @@
-import { Link, useNavigate } from "react-router-dom";
-import { useShop } from "../features/shop/ShopContext";
+import { Link } from "react-router-dom";
 import { currency } from "../utils/format";
 
+const orderItems = [
+  { id: "daily-tote", name: "데일리 토트백", price: 32000, quantity: 1 },
+  { id: "linen-cap", name: "린넨 볼캡", price: 18000, quantity: 1 },
+];
+
+const subtotal = orderItems.reduce(
+  (sum, item) => sum + item.price * item.quantity,
+  0,
+);
+const deliveryFee = 3000;
+const total = subtotal + deliveryFee;
+
 export function CheckoutPage() {
-  const shop = useShop();
-  const navigate = useNavigate();
-
-  if (shop.cart.items.length === 0) {
-    return (
-      <div className="empty">
-        <h2>주문할 상품이 없어요</h2>
-        <p>상품을 담은 뒤 주문 확인을 진행해주세요.</p>
-        <Link className="primaryLink" to="/">
-          상품 목록으로
-        </Link>
-      </div>
-    );
-  }
-
-  function submitOrder() {
-    shop.submitOrder();
-    navigate("/orders/latest");
-  }
-
   return (
     <section className="summary" aria-label="주문 요약">
       <h2>주문 확인</h2>
-      {shop.cart.items.map((item) => (
-        <div key={item.product.id}>
+      {orderItems.map((item) => (
+        <div key={item.id}>
           <span>
-            {item.product.name} x {item.quantity}
+            {item.name} x {item.quantity}
           </span>
-          <strong>{currency.format(item.product.price * item.quantity)}</strong>
+          <strong>{currency.format(item.price * item.quantity)}</strong>
         </div>
       ))}
       <div>
         <span>상품 금액</span>
-        <strong>{currency.format(shop.cart.subtotal)}</strong>
+        <strong>{currency.format(subtotal)}</strong>
       </div>
       <div>
         <span>배송비</span>
-        <strong>{currency.format(shop.cart.deliveryFee)}</strong>
+        <strong>{currency.format(deliveryFee)}</strong>
       </div>
       <div className="total">
         <span>결제 예정 금액</span>
-        <strong>{currency.format(shop.cart.total)}</strong>
+        <strong>{currency.format(total)}</strong>
       </div>
-      <button className="submit" onClick={submitOrder}>
+      <Link className="submit" to="/orders/latest">
         주문 생성
-      </button>
+      </Link>
     </section>
   );
 }
-
